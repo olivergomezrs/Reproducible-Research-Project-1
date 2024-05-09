@@ -107,3 +107,24 @@ p <- ggplot(totalImputedStepsdf, aes(x = dailySteps)) +
   theme_calc(base_family = "serif")
 
 print(p)
+
+#mean of the total number of steps taken per day
+mean(totalActivityImputed$dailySteps)
+
+#median of the total number of steps taken per day
+median(totalActivityImputed$dailySteps)
+
+#8 Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
+# Updating format of the dates
+activityDataNoNA$date <- as.Date(strptime(activityDataNoNA$date, format="%Y-%m-%d"))
+activityDataNoNA$day <- weekdays(activityDataNoNA$date)
+for (i in 1:nrow(activityDataNoNA)) {
+  if (activityDataNoNA[i,]$day %in% c("Saturday","Sunday")) {
+    activityDataNoNA[i,]$day<-"weekend"
+  }
+  else{
+    activityDataNoNA[i,]$day<-"weekday"
+  }
+}
+# 9. All of the R code needed to reproduce the results (numbers, plots, etc.) in the report
+stepsByDay <- aggregate(activityDataNoNA$steps ~ activityDataNoNA$interval + activityDataNoNA$day, activityDataNoNA, mean)
