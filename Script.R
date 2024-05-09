@@ -44,3 +44,29 @@ g <- ggplot(totalStepsdf, aes(x = Steps)) +
   theme_calc(base_family = "serif")
 
 print(g)
+
+
+#3 Mean and median number of steps taken each day
+mean(activityTotalSteps$Steps)
+median(activityTotalSteps$Steps)
+
+#4 Time series plot of the average number of steps taken
+
+# Calculating the average number of steps taken, averaged across all days by 5-min intervals.
+averageDailyActivity <- aggregate(activity$steps, by = list(activity$interval), 
+                                  FUN = mean, na.rm = TRUE)
+# Changing col names
+names(averageDailyActivity) <- c("Interval", "Mean")
+
+# Converting the data set into a dataframe
+averageActivitydf <- data.frame(averageDailyActivity)
+
+# Plotting on ggplot2
+da <- ggplot(averageActivitydf, mapping = aes(Interval, Mean)) + 
+  geom_line(col = "blue") +
+  xlab("Interval") + 
+  ylab("Average Number of Steps") + 
+  ggtitle("Average Number of Steps Per Interval") +
+  theme_calc(base_family = "serif")
+
+print(da)
